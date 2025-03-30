@@ -1,8 +1,11 @@
 import React from 'react'
+import Header from '../Common/Header'
 
 const UserLayOut = () => {
   return (
-    <div className='bg-red-500'> UserLayOut</div>
+    <div className=''>
+        <Header/>
+    </div>
   )
 }
 
