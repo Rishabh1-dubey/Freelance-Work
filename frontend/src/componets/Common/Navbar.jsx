@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { RiShoppingBagLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
+import { RxHamburgerMenu } from "react-icons/rx";
+import Search from "./Search";
 const Navbar = () => {
   return (
     <nav className="container mx-auto flex items-center justify-between py-4 px-6">
@@ -49,12 +51,23 @@ const Navbar = () => {
       {/* right side for displaaying the icon */}
       <div className="flex justify-between space-x-5 ">
         <Link to="/profile" className="hover:text-gray-600">
-          <FaRegUser className="text-2xl" />
+          <FaRegUser className="h-6 w-6 " />
         </Link>
-       <button className="relative">
-       <RiShoppingBagLine className="h-6 w-6 text-gray-700" />
-       <span className="absolute bg-[#ea2e0e] rounded-full px-2 py-0.5 -top-2 text-white text-xs">5</span>
-       </button>
+        <button className="relative">
+          <RiShoppingBagLine className="h-6 w-6 text-gray-700" />
+          <span className="absolute  bg-[#ea2e0e] rounded-full px-2 py-0.5 -top-1 text-white text-xs">
+            5
+          </span>
+        </button>
+
+        {/* search functionalituy */}
+        <div className="overflow-hidden">
+          <Search />
+        </div>
+        <button className="md:hidden">
+          <RxHamburgerMenu size={25} />
+        </button>
+        <div></div>
       </div>
     </nav>
   );
