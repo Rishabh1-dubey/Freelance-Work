@@ -15,6 +15,10 @@ const Search = () => {
     console.log("form submitted", searchItem);
     setIsOpen(false);
     setSearchItem("")
+
+
+
+    
   };
 
   return (
