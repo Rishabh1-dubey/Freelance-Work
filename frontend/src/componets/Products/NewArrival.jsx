@@ -128,7 +128,7 @@ const handleMouseUpOrLeave=()=>{
         </p>
 
         {/* Scroll button */}
-        <div className="absolute right-0 bottom-[-30px] flex space-x-2">
+        <div className="absolute right-6 bottom-[-30px] flex space-x-2">
           <button
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
