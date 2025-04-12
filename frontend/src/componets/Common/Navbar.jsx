@@ -31,7 +31,7 @@ const Navbar = () => {
         {/* middle section for all category */}
         <div className=" hidden md:flex space-x-6">
           <Link
-            to="/collection/:collection"
+            to="/collection/all"
             className="text-gray-700 hover:text-black text-sm font-medium uppercase"
           >
             Men
