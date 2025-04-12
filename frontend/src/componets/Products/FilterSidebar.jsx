@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 const FilterSidebar = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
     category: "",
     gender: "",
@@ -28,7 +29,7 @@ const FilterSidebar = () => {
     "blueviolet",
   ];
 
-  const sizes = ["xS", "M", "L", "M", "XL", "XXL", "XXXL"];
+  const sizes = ["xS", "M", "L", "XL", "XXL", "XXXL"];
 
   const materials = [
     "cotton",
@@ -60,9 +61,60 @@ const FilterSidebar = () => {
   }, [searchParams]);
 
   const handleFilterChange = (e) => {
-    const { name, value, changed ,type } = e.target;
-    console.log({ name, value, changed,type });
+    const { name, value, checked, type } = e.target;
+    console.log({ name, value, checked, type });
+    let newFilters = { ...filters };
+
+    if (type == "checkbox") {
+      if (checked) {
+        newFilters[name] = [...(newFilters[name] || []), value];
+      } else {
+        newFilters[name] = newFilters[name].filter((item) => item !== value);
+      }
+    }
+    else{
+        newFilters[name]=value
+    }
+    setFilters(newFilters)
+    console.log(newFilters)
+    updateURLParams(newFilters)
   };
+
+// PriceChangeURL
+const handlePriceChane=(e)=>{
+
+
+const newPrice = e.target.value
+setPriceRange([0,newPrice]);
+const newFilters = {...filters ,minPrice:0 , maxPrice:newPrice};
+setFilters(filters);
+updateURLParams(newFilters)
+
+}
+
+
+
+
+
+
+
+
+  const updateURLParams = (newFilters)=>{
+    const params = new URLSearchParams();
+
+    //{category:"Top Wear" ,"size:["XS","S"}
+    Object.keys(newFilters).forEach((key)=>{
+      if(Array.isArray(newFilters[key])&& newFilters[key].length>0){
+        params.append(key,newFilters[key].join(","));
+      } else if(newFilters[key]){
+        params.append(key,newFilters[key])
+      }
+    })
+
+
+setSearchParams(params)
+navigate(`?${params.toString()}`); //?category
+  }
 
   return (
     <div className="p-4">
@@ -113,7 +165,7 @@ const FilterSidebar = () => {
               key={color}
               name="color"
               value={color}
-              onChange={handleFilterChange}
+              onClick={handleFilterChange}
               className="w-8 h-8 rounded-full border border-gray-300 cursor-pointer  transition hover:scale-105"
               style={{ backgroundColor: color.toLowerCase() }}
             ></button>
@@ -183,10 +235,10 @@ const FilterSidebar = () => {
           Price Range
         </label>
         <input
-          value={priceRange}
-          onChange={handleFilterChange}
+          value={priceRange[1]}
           type="range"
           name="priceRange"
+          onChange={handlePriceChane}
           min={0}
           max={100}
           className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
