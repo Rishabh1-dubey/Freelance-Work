@@ -182,7 +182,7 @@ export const CheckoutPage = () => {
               <div className="text-lg mb-4">
                 Pay with Paypal
                 {/* pypal buttn component */}
-                <PaypalButton amount="10.00"
+                <PaypalButton amount={10.00}
               
                 onSuccess={handlePaymentSuccess}
                 onError={(err)=>alert("Payment Failed, Try again later")}
