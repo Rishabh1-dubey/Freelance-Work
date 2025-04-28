@@ -26,7 +26,9 @@ const CollectionPage = () => {
     document.addEventListener("mousedown", handleClickOutside);
 
     //clean event listener
-    document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   useEffect(() => {
@@ -97,7 +99,8 @@ const CollectionPage = () => {
         onClick={toggelClick}
         className="lg:hidden border p-2 flex justify-center items-center"
       >
-        <MdFilterAlt className="mr-24" />Filter
+        <MdFilterAlt className="mr-24" />
+        Filter
       </button>
       {/* Filter sidebar */}
       <div
@@ -108,14 +111,14 @@ const CollectionPage = () => {
       >
         <FilterSidebar />
       </div>
-{/* ------------------------------------------------------------------------------------------------------ */}
+      {/* ------------------------------------------------------------------------------------------------------ */}
       <div className="flex-grow p-4">
         <h2 className="text-2xl uppercase mb-4"> All Collection</h2>
         {/* Sort Options */}
-        <SortOption/>
+        <SortOption />
 
         {/* Product-grid */}
-        <ProductGrid products={products}/>
+        <ProductGrid products={products} />
       </div>
     </div>
   );
