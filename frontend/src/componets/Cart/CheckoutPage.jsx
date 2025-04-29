@@ -16,7 +16,7 @@ const cart = {
       size: "Xl",
       color: "Green",
       price: 20,
-      image: "https://picsum.photos/200?random=1",
+      image: "https://picsum.photos/200?random=2",
     },
   ],
   totalPrice: 195,
@@ -39,16 +39,10 @@ export const CheckoutPage = () => {
     setCheckoutId(123);
   };
 
-
-
-
-
-  const handlePaymentSuccess=(details)=>{
-    console.log("Payment successful")
-    navigate("/order-confirmation")
-
-  }
-
+  const handlePaymentSuccess = (details) => {
+    console.log("Payment successful");
+    navigate("/order-confirmation");
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter">
@@ -182,17 +176,63 @@ export const CheckoutPage = () => {
               <div className="text-lg mb-4">
                 Pay with Paypal
                 {/* pypal buttn component */}
-                <PaypalButton amount={10.00}
-              
-                onSuccess={handlePaymentSuccess}
-                onError={(err)=>alert("Payment Failed, Try again later")}
-                
-                
+                <PaypalButton
+                  amount={10.0}
+                  onSuccess={handlePaymentSuccess}
+                  onError={(err) => alert("Payment Failed, Try again later")}
                 />
               </div>
             )}
           </div>
         </form>
+      </div>
+      {/* Right section Order summary */}
+
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg mb-4 "> Order Summary</h3>
+        <div className="border-t py-4 mb-4 ">
+          {cart.products.map((product, index) => {
+            return (
+              <div
+                key={index}
+                className="flex items-start justify-between py-2 border-b"
+              >
+                <div className="flex items-center">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-20 h-24 object-cover mr-4"
+                  />
+                <div>
+                  <h3 className="text-md">{product.name}</h3>
+                  <p className="text-gray-500"> Size: {product.size}</p>
+                  <h3 className="text-gray-500"> Color:{product.color}</h3>
+                </div>
+                </div>
+                <div>
+                  <p className="font-semibold text-lg">${product.price}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* total Price */}
+
+        <div className="flex justify-between items-center text-lg mb-4">
+
+
+          <p>Subtotal</p>
+          <p>${cart.totalPrice.toLocaleString()} </p>
+        </div>
+        <div className="flex justify-between items-center text-lg">
+          <p>Shipping</p>
+          <p>Free</p>
+        </div>
+        <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
+        <p>Total</p>
+        <p>${cart.totalPrice?.toLocaleString()} </p>
+        </div>
       </div>
     </div>
   );

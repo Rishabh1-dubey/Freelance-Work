@@ -1,13 +1,15 @@
 import React from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
+
+//sb-0gj7241071477@personal.example.com
+//password: NfbFN^e0
 const PaypalButton = ({ amount, onError, onSuccess }) => {
   return (
     <PayPalScriptProvider
       options={{
-        clientId: "AZ96mtScgl75rdljIbp7kHHh_O-we8_6TyS_Uej9oIRiKf9lOSwXePJwItPyZ5-aASaq_cQv0rVdEb7Y",
-        currency: "USD",
-        intent: "capture"
+        clientId: "ASGgshryZEK_UESSXpyophqkagsPhWv0gGQk1_8RtE6wZrq0b8YTEWV0KHDkEpTW-HDHJutTKLE8OPPj",
+        currency:"USD"
       }}
     >
       <PayPalButtons
