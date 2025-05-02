@@ -3,12 +3,14 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 
 //sb-0gj7241071477@personal.example.com
+//email:rishbahraghvedradubey
+//pass:Risab%^%^@06
 //password: NfbFN^e0
 const PaypalButton = ({ amount, onError, onSuccess }) => {
   return (
     <PayPalScriptProvider
       options={{
-        clientId: "ASGgshryZEK_UESSXpyophqkagsPhWv0gGQk1_8RtE6wZrq0b8YTEWV0KHDkEpTW-HDHJutTKLE8OPPj",
+        clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID,
         currency:"USD"
       }}
     >

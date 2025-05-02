@@ -64,6 +64,9 @@ const Navbar = () => {
 
         {/* right side for displaaying the icon */}
         <div className="flex justify-between space-x-5 ">
+          <Link to="/admin" className=" mr-6 bg-black text-white rounded-md px-2 cursor-pointer">
+         Admin
+          </Link>{" "}
           <Link to="/profile" className="hover:text-gray-600">
             <FaRegUser className="h-6 w-6 " />
           </Link>
@@ -73,7 +76,6 @@ const Navbar = () => {
               5
             </span>
           </button>
-
           {/* search functionalituy */}
           <div className="overflow-hidden">
             <Search />
@@ -122,7 +124,7 @@ const Navbar = () => {
                 onClick={togglenavDrawer}
                 className="block text-gray-500 hover:text-black"
               >
-             BottomWear
+                BottomWear
               </Link>
               <Link
                 onClick={togglenavDrawer}
