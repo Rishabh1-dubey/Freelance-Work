@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 const UserManagementList = () => {
   const users = [
-    {
+    { _id:1234,
       name: "Rishabh", // Fixed typo in name
       email: "rishabh@gmail.com",
       role: "Admin",
@@ -28,10 +28,12 @@ const UserManagementList = () => {
 const handleSubmit =(e)=>{
 e.preventDefault()
 console.log(formData)
+// reset the form after sumission
 setFormData({
   name:"",
   password:"",
-  email:""
+  email:"",
+  role:"customer"
 })
 }
 
@@ -79,8 +81,30 @@ setFormData({
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-        <button>submit</button>
+        <button type="submit" className="bg-green-400 text-white py-2 px-4 rounded hover:bg-green-700">Add User</button>
         </form>
+      </div>
+      {/* UserList Mangagement */}
+      <div className="overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="min-w-full text-left text-gray-500">
+          <thead className="bg-gray-100 text-xs uppercase text-gray-600">
+            <tr>
+              <th className="py-3 px-4">Name</th>
+              <th className="py-3 px-4">Email</th>
+              <th className="py-3 px-4">Role</th>
+              <th className="py-3 px-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((users)=>(
+             <tr key={users._id}>
+              <td className="p-4 font-medium text-gray-900 whitespace-nowrap">{users.name}</td>
+              <td className="p-4 font-medium text-gray-900 whitespace-nowrap">{users.email}</td>
+              <td className="p-4 font-medium text-gray-900 whitespace-nowrap">{users.role}</td>
+             </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
