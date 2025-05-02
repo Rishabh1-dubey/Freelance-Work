@@ -63,8 +63,8 @@ const Navbar = () => {
         </div>
 
         {/* right side for displaaying the icon */}
-        <div className="flex justify-between space-x-5 ">
-          <Link to="/admin" className=" mr-6 bg-black text-white rounded-md px-2 cursor-pointer">
+        <div className="flex justify-between space-x-4 ">
+          <Link to="/admin" className="  bg-black text-white rounded-md px-2 cursor-pointer">
          Admin
           </Link>{" "}
           <Link to="/profile" className="hover:text-gray-600">
