@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MyOrderPage = () => {
   const [orders, setOrders] = useState([]);
+ const navigate = useNavigate()
+
+const handleRowClick =(orderId)=>{
+  navigate(`/order/${orderId}`)
+}
 
   useEffect(() => {
     setTimeout(() => {
@@ -70,7 +76,7 @@ const MyOrderPage = () => {
           <tbody>
             {orders.length > 0 ? (
               orders.map((order) => (
-                <tr
+                <tr onClick={()=>handleRowClick(order._id)}
                   key={order._id}
                   className="border-b hover:border-gray-50 cursor-pointer"
                 >
