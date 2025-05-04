@@ -1,20 +1,40 @@
 const express = require("express");
-
-const User = require("../models/User.js")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 const router = express.Router()
 
-router.post("/register", async(req,res)=>{
-  const {name,email,password} = req.body
+router.post("/register", async (req, res) => {
+  const { name, email, password } = req.body;
+
   try {
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ message: "User already Exist" });
+
+    const newUser = new User({ name, email, password });
+    const savedUser = await newUser.save();
+
     
-    console.log("checking the boyd of the app",req.body)
-    res.send({name,email,password})
-  } catch (error) {
-    console.log(error)
-    res.status(500).send("Something went wrong" + error)
-  }
+// Implemented JWT Token 🚨🚨🚨🚨🚨🚨🚨
+
+const payload = {user:{_id:savedUser._id, role:savedUser.role}}
+
+jwt.sign(payload, process.env.JWT_SECRET,{expiresIn:"10h"},(err,token)=>{
+  if(err) throw new Error("Not able to get Token")
+      
+    res.status(201).json({user:{
+      _id:savedUser._id,
+      name:savedUser.name,
+      email:savedUser.email,
+      role:savedUser.role
+    },token})
 })
 
-module.exports =router;
+  } catch (error) {
+    console.log(error)
+    res.status(400).send("Something went wrong" + error)
+  }
+});
+
+
+module.exports = router;
