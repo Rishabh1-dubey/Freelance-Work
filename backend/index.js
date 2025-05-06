@@ -2,6 +2,7 @@ const express = require("express");
 const cors=require("cors");
 const dotenv = require("dotenv")
 const userRoute = require("./Routes/userRoute.js")
+const productRoute = require("./Routes/productRoutes.js")
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.get("/",(req,res)=>{
 
 // Api Routes
 app.use("/api/users",userRoute)
+app.use("/api/users",productRoute)
 
 app.listen(PORT,()=>{
     console.log(`hello man server on runngin on port http://localhost:${PORT}`)
