@@ -5,8 +5,6 @@ const { protect, admin } = require("../middlewares/authMiddleware");
 const router = express.Router();
 app.use(express.json());
 
-
-
 router.post("/products", protect, admin, async (req, res) => {
   const {
     name,
@@ -61,6 +59,20 @@ router.post("/products", protect, admin, async (req, res) => {
     res.status(400).send("Not able to reendering the Product details" + error);
   }
 });
+
+
+router.get("/products/new-arrival",async(req,res)=>{
+  try {
+    //Fetch latest 8 products
+
+const newArrivals = await Product.find().sort({createdAt:-1}).limit(8);
+res.json(newArrivals)
+  } catch (error) {
+   console.log(error);
+   res.status(500).send("not able to fetch and the new Arraival") 
+  }
+})
+
 
 // @route PUT/api/product/:id
 //@desc Update an existing ProductID
@@ -143,6 +155,130 @@ router.delete("/products/:id", protect, admin, async (req, res) => {
   } catch (error) {
     console.log("something went wrong" + error);
     res.status(400).json({ message: "not able to delelte the user" });
+  }
+});
+
+router.get("/products", async (req, res) => {
+  try {
+    const {
+      collection,
+      size,
+      color,
+      gender,
+      minPrice,
+      maxPrice,
+      sortBy,
+      search,
+      category,
+      material,
+      brand,
+      limit,
+    } = req.query;
+
+    let query = {};
+    // Filter logic
+
+    if (collection && collection.toLocaleLowerCase() !== "all") {
+      query.collections = collection;
+    }
+    if (material) {
+      query.material = { $in: material.split(",") };
+    }
+    if (brand) {
+      query.brand = { $in: brand.split(",") };
+    }
+    if (size) {
+      query.size = { $in: size.split(",") };
+    }
+    if (color) {
+      query.colors = { $in: [color] };
+    }
+    if (gender) {
+      query.gender = gender;
+    }
+
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = Number(minPrice);
+      if (maxPrice) query.price.$lte = Number(maxPrice);
+    }
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+    // sort Logic
+    let sort = {};
+    if (sortBy) {
+      switch (sortBy) {
+        case "priceAsc":
+          sort = { price: 1 };
+          break;
+        case "priceDesc":
+          sort = { price: -1 };
+          break;
+        case "popularity":
+          sort = { rating: -1 };
+          break;
+        default:
+          break;
+      }
+    }
+    // fetch products and apply sorting and limit
+    let products = await Product.find(query)
+      .sort(sort)
+      .limit(Number(limit) || 0);
+    res.json(products);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("server error");
+  }
+});
+
+//  @route get single Products/api/product/:id
+//@desc Update an existing ProductID
+//@access Private/Admin
+
+router.get("/products/:id", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      return res
+        .status(400)
+        .json({ message: "NOt able to Update the Product" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json("something went wrong" + error);
+  }
+});
+
+//  @route get single Products/api/product/:id
+//@desc Update an existing ProductID
+//@access Private/Admin
+
+router.get("/products/similar/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(400).json({ message: " Product Not found" });
+    }
+    const similarProducts = await Product.find({
+      _id: { $ne: id },
+      gender: product.category,
+    }).limit(4);
+
+    res.json(similarProducts);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json("something went wrong" + error);
   }
 });
 
