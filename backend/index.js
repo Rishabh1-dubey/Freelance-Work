@@ -4,6 +4,7 @@ const dotenv = require("dotenv")
 const userRoute = require("./Routes/userRoute.js")
 const productRoute = require("./Routes/productRoutes.js")
 const cartRoute = require("./Routes/cartRoute.js")
+const checkoutRoute = require("./Routes/checkoutRoute.js")
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.get("/",(req,res)=>{
 app.use("/api/users",userRoute)
 app.use("/api/users",productRoute)
 app.use("/api/cart",cartRoute)
+app.use("/api/checkout",checkoutRoute)
 
 app.listen(PORT,()=>{
     console.log(`hello man server on runngin on port http://localhost:${PORT}`)
