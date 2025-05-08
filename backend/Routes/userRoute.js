@@ -39,7 +39,7 @@ router.post("/register", async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    res.status(400).send("Something went wrong" + error);
+    return res.status(400).send("Something went wrong" + error);
   }
 });
 
