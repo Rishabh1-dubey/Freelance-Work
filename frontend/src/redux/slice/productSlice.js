@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
 // Async thunk to fetch Proucts by Collection and optional filters
 export const fetchProductsByFilters = createAsyncThunk(
-  "products/fetchBYFilters",
+  "products/fetchByFilters",
   async ({
     collection,
     size,
@@ -14,6 +15,7 @@ export const fetchProductsByFilters = createAsyncThunk(
     sortBy,
     category,
     material,
+    search,
     brand,
     limit,
   }) => {
@@ -26,13 +28,16 @@ export const fetchProductsByFilters = createAsyncThunk(
     if (minPrice) query.append("minPrice", minPrice);
     if (maxPrice) query.append("maxPrice", maxPrice);
     if (sortBy) query.append("sortBy", sortBy);
+    if (search) query.append("sortBy", search);
     if (category) query.append("category", category);
     if (material) query.append("material", material);
     if (brand) query.append("brand", brand);
     if (limit) query.append("limit", limit);
 
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/users/products?${query.toString()}`
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/users/products?${query.toString()}`
     );
     return response.data;
   }
@@ -55,7 +60,7 @@ export const updateProduct = createAsyncThunk(
   "products/updateProduct",
   async ({ id, productData }) => {
     const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/products/${id}`,
       productData,
       {
         headers: {
@@ -90,11 +95,13 @@ const productSlice = createSlice({
       category: "",
       size: "",
       color: "",
+      gender: "",
       minPrice: "",
       maxPrice: "",
       sortBy: "",
-      category: "",
+      search: "",
       material: "",
+      collection: "",
       brand: "",
       limit: "",
     },
@@ -108,11 +115,13 @@ const productSlice = createSlice({
         category: "",
         size: "",
         color: "",
+        gender: "",
         minPrice: "",
         maxPrice: "",
         sortBy: "",
-        category: "",
+        search: "",
         material: "",
+        collection: "",
         brand: "",
         limit: "",
       };
@@ -127,41 +136,58 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductsByFilters.fulfilled, (state, action) => {
         (state.loading = false),
-          (state.products = Array.isArray(action.payload));
+          (state.products = Array.isArray(action.payload)
+            ? action.payload
+            : []);
       })
-      .addCase(fetchProductsByFilters.rejected, (state,action) => {
+      .addCase(fetchProductsByFilters.rejected, (state, action) => {
         (state.loading = false), (state.error = action.error.message);
       })
+
+      //fetch single productDetails
       .addCase(fetchProductsDetails.pending, (state) => {
-        (state.loading = true), 
-        (state.error = null);
+        (state.loading = true), (state.error = null);
       })
       .addCase(fetchProductsDetails.fulfilled, (state, action) => {
-        state.loading = false,
-          state.similarProducts = action.payload
+        (state.loading = false), (state.selectedProduct = action.payload);
+        // here i made a mistake and with this mistake i was not redeing my data
+        
       })
-      .addCase(fetchProductsDetails.rejected, (state,action) => {
+      .addCase(fetchProductsDetails.rejected, (state, action) => {
         (state.loading = false), (state.error = action.error.message);
       })
+      // handling updating product
       .addCase(updateProduct.pending, (state) => {
-        (state.loading = true), 
-        (state.error = null);
+        (state.loading = true), (state.error = null);
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        state.loading = false,
-          state.updateProduct = action.payload
-          const index = state.products.findIndex((product)=>product._id=== updateProduct._id);
+        state.loading = false; 
+        const updateProduct = action.payload;
+        const index = state.products.findIndex(
+          (product) => product._id === updateProduct._id
+        );
 
-          if(index!==1){
-            state.products[index]= updateProduct
-          }
+        if (index !== -1) {
+          state.products[index] = updateProduct;
+        }
       })
-      .addCase(updateProduct.rejected, (state) => {
+      .addCase(updateProduct.rejected, (state,action) => {
+        state.loading = false,
+         state.error = action.error.message
+      })
+      // fetch similar product
+      .addCase(fetchSimiliarProuducts.pending, (state) => {
+        (state.loading = true), (state.error = null);
+      })
+      .addCase(fetchSimiliarProuducts.fulfilled, (state, action) => {
+        state.loading = false,
+         state.similarProducts = action.payload;
+      })
+      .addCase(fetchSimiliarProuducts.rejected, (state,action) => {
         (state.loading = false), (state.error = action.error.message);
       });
   },
 });
 
-
-export const{setFilters,clearFilters} = productSlice.actions;
-export default productSlice.reducer
+export const { setFilters, clearFilters } = productSlice.actions;
+export default productSlice.reducer;
