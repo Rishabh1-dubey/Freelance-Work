@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../redux/slice/authSlice";
 
 const Register = () => {
-    const[name , setName] = useState("")
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
 
-const handleClick=(e)=>{
-e.preventDefault()
-console.log("User registerd",{name,email,password})
-}
-
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log("User registerd", { name, email, password });
+    dispatch(registerUser({ name, email, password }));
+  };
 
   return (
     <div className="flex ">
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
-        <form onSubmit={handleClick} className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm">
+        <form
+          onSubmit={handleClick}
+          className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm"
+        >
           <div className="flex justify-center mb-6">
             <h2 className="text-xl font-medium">Shopeasy</h2>
           </div>
@@ -34,7 +40,7 @@ console.log("User registerd",{name,email,password})
               type="text"
               placeholder="Enter your Username"
             />
-          </div> 
+          </div>
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">Email</label>
             <input
@@ -71,7 +77,6 @@ console.log("User registerd",{name,email,password})
       </div>
       {/* Right side */}
 
-      
       <div className="hidden md:block w-1/2 bg-gray-800">
         <div className="h-full flex flex-col justify-center  items-center">
           <img
@@ -80,8 +85,7 @@ console.log("User registerd",{name,email,password})
             className=" object-cover w-full "
           />
         </div>
-      </div> 
-      
+      </div>
     </div>
   );
 };

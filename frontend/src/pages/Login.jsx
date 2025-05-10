@@ -1,18 +1,18 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
+import {loginUser,}  from "../redux/slice/authSlice" 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
 
-
+const dispath = useDispatch()
 
   const handleClick=(e)=>{
     e.preventDefault()
-    console.log("User registerd",{email,password})
-    }
-
+    dispath(loginUser({email,password}))
+  }
   return (
     <div className="flex ">
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
@@ -76,4 +76,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login
