@@ -237,6 +237,33 @@ router.get("/products", async (req, res) => {
   }
 });
 
+
+
+//  @route get single Products/api/product/best-seller
+//@desc retreive the product with hightrating
+//@access Private/Admin
+
+
+router.get("/products/best-seller", async(req,res)=>{
+  
+  try {
+    const bestSeller = await Product.findOne().sort({rating:-1});
+if(bestSeller){
+  res.json(bestSeller)
+}else{
+  res.status(404).json({message:"NO best seller Found"})
+}
+
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:"Server error"})
+  }
+})
+
+
+
+
 //  @route get single Products/api/product/:id
 //@desc Update an existing ProductID
 //@access Private/Admin
@@ -264,7 +291,7 @@ router.get("/products/:id", async (req, res) => {
 
 router.get("/products/similar/:id", async (req, res) => {
   const { id } = req.params;
-  try {
+  try {                                                   
     const product = await Product.findById(id);
 
     if (!product) {
@@ -272,7 +299,8 @@ router.get("/products/similar/:id", async (req, res) => {
     }
     const similarProducts = await Product.find({
       _id: { $ne: id },
-      gender: product.category,
+      gender: product.gender,
+      category:product.category
     }).limit(4);
 
     res.json(similarProducts);
@@ -281,5 +309,8 @@ router.get("/products/similar/:id", async (req, res) => {
     res.status(400).json("something went wrong" + error);
   }
 });
+
+
+
 
 module.exports = router;
