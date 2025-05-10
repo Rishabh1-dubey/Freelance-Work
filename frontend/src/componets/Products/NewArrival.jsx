@@ -1,7 +1,9 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaS, FaSearchengin } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+
 const NewArrival = () => {
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -10,80 +12,36 @@ const NewArrival = () => {
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(true);
 
-  const newArraivals = [
-    {
-      _id: "1",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://picsum.photos/500/500?random=1",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "2",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://picsum.photos/500/500?random=2",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "3",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://picsum.photos/500/500?random=3",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "4",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://picsum.photos/500/500?random=4",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-    {
-      _id: "5",
-      name: "Stylish Jacket",
-      price: 120,
-      images: [
-        {
-          url: "https://picsum.photos/500/500?random=5",
-          altText: "Stylish Jacket",
-        },
-      ],
-    },
-  ];
+  const [newArriavals, setNewArraival] = useState([]);
 
-const handleMouseDown=(e)=>{
-    setIsDragging(true)
-    setStartX(e.pageX-scrollRef.current.offsetLeft)
-    setScrollLeft(scrollRef.current.scrollLeft)
-}
+  useEffect(() => {
+    const fetchNewArraival = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/products/new-arrival`
+        );
+        setNewArraival(response.data)
+      } catch (error) {}
+    };
+    fetchNewArraival();
+  }, []);
 
-const handleMouseMove=(e)=>{
-    if(!isDragging) return;
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk =x-startX;
-    scrollRef.current.scrollLeft = scrollLeft- walk
-}
+    const walk = x - startX;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
 
-const handleMouseUpOrLeave=()=>{
-    setIsDragging(false)
-}
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
 
   const scroll = (direction) => {
     const scrollAmount = direction === "left" ? -300 : 300;
@@ -117,10 +75,10 @@ const handleMouseUpOrLeave=()=>{
         container.removeEventListener("scroll", UpdateScrollButton);
       }
     };
-  }, []);
+  }, [newArriavals]);
   return (
     <section className="py-16 px-4 lg:px-0">
-      <div className="container mx-auto text-center mb-10 relative " >
+      <div className="container mx-auto text-center mb-10 relative ">
         <h2 className="text-3xl font-bold mb-4">Explore New Arrivals</h2>
         <p className="text-lg text-gray-400 mb-12">
           Discover the latest styles straight off the runway, freshly added to
@@ -156,14 +114,16 @@ const handleMouseUpOrLeave=()=>{
       {/* Scrollalbe Content  */}
 
       <div
-  ref={scrollRef}
-  onMouseDown={handleMouseDown}
-  onMouseMove={handleMouseMove}
-  onMouseUp={handleMouseUpOrLeave}
-  onMouseLeave={handleMouseUpOrLeave}
-  className={`overflow-x-scroll flex space-x-6 relative mx-12 ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
->
-        {newArraivals.map((product) => (
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUpOrLeave}
+        onMouseLeave={handleMouseUpOrLeave}
+        className={`overflow-x-scroll flex space-x-6 relative mx-12 ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+      >
+        {newArriavals.map((product) => (
           <div
             className="min-w-[100%] sm:min-w-[50%] lg:min-w-[30%] relative"
             key={product._id}
@@ -177,7 +137,7 @@ const handleMouseUpOrLeave=()=>{
             <div className="absolute bottom-0 left-0 right-0 bg-opacity-50 backdrop:blur-md text-white p-4 rounded-b-lg">
               <Link to={`/product/${product._id}`} className="block">
                 <h4 className="font-medium">{product.name}</h4>
-                <p className="mt-1">{product.price}</p>
+                <p className="mt-1">${product.price}</p>
               </Link>
             </div>
           </div>
