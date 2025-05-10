@@ -4,6 +4,8 @@ import GenderCollection from "../componets/Products/GenderCollection";
 import NewArrival from "../componets/Products/NewArrival";
 import ProductDetails from "../componets/Products/ProductDetails";
 import { useDispatch, useSelector } from "react-redux";
+import FeaturedCollection from "../componets/Products/FeaturedCollection";
+import FeaturedSection from "../componets/Products/FeaturedSection";
 import { fetchProductsByFilters } from "../redux/slice/productSlice";
 import ProductGrid from "../componets/Products/ProductGrid";
 import axios from "axios";
@@ -43,7 +45,8 @@ const Home = () => {
 
       <h2 className="text-3xl text-center font-bold mb-4">Best Seller</h2>
       {bestSellerProduct ? (
-        <ProductDetails productId={bestSellerProduct._id} />
+        (console.log("best seller Products", bestSellerProduct),
+        (<ProductDetails productId={bestSellerProduct._id} />))
       ) : (
         <p>Loading ..............</p>
       )}
@@ -53,8 +56,9 @@ const Home = () => {
           Top Wears for Women
         </h2>
         <ProductGrid products={products} loading={loading} error={error} />
-        
       </div>
+      <FeaturedCollection />
+      <FeaturedSection />
     </div>
   );
 };
