@@ -1,8 +1,5 @@
-
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import FeaturedCollection from "./FeaturedCollection";
-import FeaturedSection from "./FeaturedSection";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,8 +12,9 @@ import ProductGrid from "./ProductGrid";
 const ProductDetails = ({ productId }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { selectedProduct, loading, error, similarProducts } =
-    useSelector((state) => state.products);
+  const { selectedProduct, loading, error, similarProducts } = useSelector(
+    (state) => state.products
+  );
   const { user, guestId } = useSelector((state) => state.auth);
   const [mainImage, setMainImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
@@ -27,6 +25,7 @@ const ProductDetails = ({ productId }) => {
   const productFetchId = productId || id;
 
   useEffect(() => {
+    console.log("chekcing the id", productFetchId);
     if (productFetchId) {
       dispatch(fetchProductsDetails(productFetchId));
       dispatch(fetchSimiliarProuducts({ id: productFetchId }));
@@ -74,10 +73,11 @@ const ProductDetails = ({ productId }) => {
       });
   };
 
-  if(loading){
-    return <p>Loading ..................</p>
-  } if(error){
-    return <p>Error:{error}</p>
+  if (loading) {
+    return <p>Loading ..................</p>;
+  }
+  if (error) {
+    return <p>Error:{error}</p>;
   }
   return (
     <div className="p-6">
@@ -165,7 +165,7 @@ const ProductDetails = ({ productId }) => {
                 <p className="text-gray-700">Size:</p>
                 <div className="flex gap-2 mt-2">
                   {selectedProduct.sizes.map((size) => (
-                    <button
+                    <button 
                       onClick={() => setSelectedSize(size)}
                       key={size}
                       className={`px-4 py-2 rounded border ${
@@ -235,13 +235,15 @@ const ProductDetails = ({ productId }) => {
               You may Also Like this
             </h2>
 
-            <ProductGrid products={similarProducts} loading={loading} error={error}  />
+            <ProductGrid
+              products={similarProducts}
+              loading={loading}
+              error={error}
+            />
           </div>
           {/* YOu may also like this section */}
         </div>
       )}
-      <FeaturedCollection />
-      <FeaturedSection />
     </div>
   );
 };
