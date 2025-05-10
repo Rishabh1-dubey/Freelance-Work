@@ -234,12 +234,13 @@ const ProductDetails = ({ productId }) => {
             <h2 className="text-xl text-center font-medium mb-4">
               You may Also Like this
             </h2>
+            
 
             <ProductGrid
               products={similarProducts}
               loading={loading}
               error={error}
-            />
+            />{console.log("similear product", similarProducts)}
           </div>
           {/* YOu may also like this section */}
         </div>
