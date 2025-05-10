@@ -28,7 +28,7 @@ export const fetchProductsByFilters = createAsyncThunk(
     if (minPrice) query.append("minPrice", minPrice);
     if (maxPrice) query.append("maxPrice", maxPrice);
     if (sortBy) query.append("sortBy", sortBy);
-    if (search) query.append("sortBy", search);
+    if (search) query.append("search", search);
     if (category) query.append("category", category);
     if (material) query.append("material", material);
     if (brand) query.append("brand", brand);
@@ -150,7 +150,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductsDetails.fulfilled, (state, action) => {
         (state.loading = false), (state.selectedProduct = action.payload);
-        // here i made a mistake and with this mistake i was not redeing my data
+        // here i made a mistake and with this mistake i was not rendering  my best seller data
         
       })
       .addCase(fetchProductsDetails.rejected, (state, action) => {

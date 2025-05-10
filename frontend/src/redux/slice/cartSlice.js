@@ -71,7 +71,7 @@ export const updateCartItemQuantity = createAsyncThunk(
   ) => {
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/update-cart`,
         {
           productId,
           quantity,
@@ -99,8 +99,8 @@ export const removeFromCart = createAsyncThunk(
     try {
       const response = await axios({
         method: "DELETE",
-        url: `${import.meta.env.VITE_BACKEND_URL}/api/cart`,
-        date: { productId, quantity, size, color, guestId, userId },
+        url: `${import.meta.env.VITE_BACKEND_URL}/api/cart/remove-cart`,
+        data: { productId, quantity, size, color, guestId, userId },
       });
       return response.data;
     } catch (error) {
