@@ -11,10 +11,12 @@ const protect = async (req, res, next) => {
      
 
       token = req.headers.authorization.split(" ")[1];
+      console.log("Received Token:", token); // Debug log
 
       // ✅ Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+      console.log("decoded the value", decoded)
       
       // ✅ Attach user (without password) to req object
       req.user = await User.findById(decoded.user._id).select("-password");
