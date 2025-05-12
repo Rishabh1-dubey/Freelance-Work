@@ -32,7 +32,7 @@ export const registerUser = createAsyncThunk(
         userData
       );
       localStorage.setItem("UserInfo", JSON.stringify(response.data.user));
-      localStorage.setItem("UserToken", response.data.token);
+      localStorage.setItem("userToken", response.data.token);
 
       return response.data.user; //Return the Object form the data
     } catch (error) {
@@ -51,7 +51,7 @@ export const loginUser = createAsyncThunk(
         userData
       );
       localStorage.setItem("UserInfo", JSON.stringify(response.data.user));
-      localStorage.setItem("UserToken", response.data.token);
+      localStorage.setItem("userToken", response.data.token);
 
       return response.data.user; //Return the Object form the data
     } catch (error) {
@@ -87,7 +87,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state,action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.user = action.payload;
       })
       .addCase(loginUser.rejected, (state,action) => {
         state.loading = true;
@@ -99,7 +99,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state,action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.user = action.payload;
       })
       .addCase(registerUser.rejected, (state,action) => {
         state.loading = true;
