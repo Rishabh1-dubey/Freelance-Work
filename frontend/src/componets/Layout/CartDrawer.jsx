@@ -38,7 +38,10 @@ const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
         {cart && cart?.products?.length > 0 ? (
           <CartContent cart={cart} userId={userId} guestId={guestId} />
         ) : (
-          <p>Your cart is empty.....</p>
+          <>
+         
+          <img src="https://i.pinimg.com/736x/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.jpg"/>
+          </>
         )}
       </div>
 
