@@ -2,17 +2,24 @@ import React, { useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { FaXmark } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchProductsByFilters, setFilters } from "../../redux/slice/productSlice";
 
 const Search = () => {
   const [searchItem, setSearchItem] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleToggle = (e) => {
     setIsOpen(!isOpen);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("form submitted", searchItem);
+  dispatch(setFilters({search:searchItem}))
+  dispatch(fetchProductsByFilters({search:searchItem}))
+  navigate(`/collection/all?search=${searchItem}`)
     setIsOpen(false);
     setSearchItem("")
 
