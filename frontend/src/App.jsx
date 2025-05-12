@@ -20,6 +20,7 @@ import EditProducts from "./componets/Admin/EditProducts";
 // subscribing the store
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import ProtectedRoute from "./componets/Common/ProtectedRoute";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
           <Route path="/" element={<UserLayOut />}>
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Register />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/collection/:all" element={<CollectionPage />} />
             <Route path="/product/:id" element={<ProductDetails />} />
@@ -42,7 +43,7 @@ function App() {
 
           {/* Adming layout page route */}
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<ProtectedRoute role="admin"><AdminLayout /></ProtectedRoute>}>
             <Route index element={<AdminHomePages />} />
             <Route path="users" element={<UserManagementList />} />
             <Route path="products" element={<ProductManagement />} />
