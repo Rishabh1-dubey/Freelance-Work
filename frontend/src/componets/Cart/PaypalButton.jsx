@@ -21,7 +21,7 @@ const PaypalButton = ({ amount, onError, onSuccess }) => {
             purchase_units: [
               {
                 amount: {
-                  value: amount,
+                  value: parseFloat(amount).toFixed(2),
                   currency_code: "USD"
                 }
               }
