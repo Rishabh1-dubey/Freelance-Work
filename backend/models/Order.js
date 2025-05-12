@@ -16,14 +16,14 @@ const orderItemSchema = new mongoose.Schema(
       required: true,
     },
     price: {
-      type: String,
+      type: Number,
       required: true,
     },
     color: String,
     size: String,
 
     quantity: {
-      type: String,
+      type: Number,
       required: true,
     },
   },
@@ -75,7 +75,7 @@ const orderSchema = new mongoose.Schema(
     },
   },
   {
-    timeseries: true,
+    timestamps: true,
   }
 );
 

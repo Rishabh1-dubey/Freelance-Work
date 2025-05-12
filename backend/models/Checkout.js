@@ -13,6 +13,8 @@ const CheckoutItemSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
     size: { type: String, required: true },
+    color: { type: String },
+   
   },
   { _id: false }
 );
@@ -58,6 +60,7 @@ const CheckoutSchema = new mongoose.Schema({
   },finalizedAt:{
     type:Date,
   }
-},{timestamps:true});
+},
+{timestamps:true})
 
 module.exports = mongoose.model("Checkout", CheckoutSchema)
