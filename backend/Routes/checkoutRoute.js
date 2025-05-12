@@ -2,8 +2,6 @@ const exppress = require("express");
 const Cart = require("../models/Cart");
 const Checkout = require("../models/Checkout")
 const Order = require("../models/Order")
-const Product = require("../models/Products");
-const User = require("../models/User");
 const { protect } = require("../middlewares/authMiddleware");
 
 const router = exppress.Router();
@@ -11,7 +9,7 @@ const router = exppress.Router();
 //   @Route POST api/checkout
 //   @desc create a new checkout session
 
-router.post("/", protect, async (req, res) => {
+router.post("/checkout", protect, async (req, res) => {
   const { checkoutItems, shippingAddress, paymentMethod, totalPrice } =
     req.body;
   if (!checkoutItems || checkoutItems.length === 0) {
@@ -30,7 +28,7 @@ router.post("/", protect, async (req, res) => {
     console.log(`Just Checkout the User ${req.user._id}`);
     return res.status(201).json(newCheckout);
   } catch (error) {
-    console.log(error);
+    console.log("Error Creating the checkout session",error);
   return  res.status(401).json("Server Error" + error);
   }
 });
@@ -43,7 +41,7 @@ router.put("/:id/pay", protect, async (req, res) => {
   try {
     const checkout = await Checkout.findById(req.params.id);
     if (!checkout)
-      return res.status(401).json({ message: "NOt able to generate the data" });
+      return res.status(401).json({ message: "Checkout not found" });
 
     if (paymentStatus == "paid") {
       checkout.isPaid = true;
@@ -54,11 +52,11 @@ router.put("/:id/pay", protect, async (req, res) => {
       await checkout.save();
       res.status(201).json(checkout);
     } else {
-   return   res.status(401).json("Failed to Payment Checkout");
+   return   res.status(401).json({message:"Invalid Payement Status"});
     }
   } catch (error) {
     console.log(error);
-    return res.status(402).json("Server Error");
+    return res.status(500).json({message:"Server Error"});
   }
 });
 
@@ -107,7 +105,7 @@ if(checkout.isPaid && !checkout.isFinalized){
 
   } catch (error) {
     console.log(error);
-    res.status(401).json("Server Error" + error);
+    res.status(401).json({message:"Server Error" + error});
   }
 })
 module.exports = router

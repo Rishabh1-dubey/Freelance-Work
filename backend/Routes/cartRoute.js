@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
   const { productId, quantity, size, color, guestId, userId } = req.body;
 
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.findById( productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     // Determine user is loggesIN or Guest
@@ -132,7 +132,7 @@ router.put("/update-cart", async (req, res) => {
 // @accesss public
 
 router.delete("/remove-cart", async (req, res) => {
-  const { productId, quantity, size, color, guestId, userId } = req.body;
+  const { productId, size, color, guestId, userId } = req.body;
   try {
     let cart = await getCart(userId, guestId);
     if (!cart) return res.status(400).json({ message: "Cart is not found" });

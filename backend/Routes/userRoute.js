@@ -45,7 +45,7 @@ router.post("/register", async (req, res) => {
 
 //@POST for login api/v1/login
 
-router.post("/login", async (req,res)=>{
+router.post("/login",async (req,res)=>{
   const {email,password} = req.body;
 
   try {
