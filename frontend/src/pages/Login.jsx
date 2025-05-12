@@ -1,17 +1,40 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import {loginUser,}  from "../redux/slice/authSlice" 
+import reducer, { mergeCart } from "../redux/slice/cartSlice";
+import { FaGuaraniSign } from "react-icons/fa6";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const{user,guestId,loading} = useSelector((state)=>state.auth)
+  const {cart} = useSelector((state)=>state.cart)
 
 
-const dispath = useDispatch()
+// get the parameter and chekck if it is checkout or something
+const redirect = new URLSearchParams(location.search).get("redirect") || "/"
+const isCheckoutRedirect = redirect.includes("checkout");
+
+
+useEffect(()=>{
+  if(user){
+    if(cart?.products.length>0 && guestId){
+      console.log("Merging cart:", guestId, user);
+      dispatch(mergeCart({guestId,user})).then(()=>{
+        navigate(isCheckoutRedirect ? "/checkout":"/")
+      })
+    }else{
+      navigate(isCheckoutRedirect ? "/checkout":"/")
+    }
+  }
+},[user,guestId,cart,navigate,isCheckoutRedirect,dispatch])
 
   const handleClick=(e)=>{
     e.preventDefault()
-    dispath(loginUser({email,password}))
+    dispatch(loginUser({email,password}))
   }
   return (
     <div className="flex ">
@@ -46,12 +69,12 @@ const dispath = useDispatch()
             />
           </div>
           <button className="bg-black w-full text-white rounded py-2 px-2 font-semibold hover:bg-gray-900 cursor-pointer transition ">
-            SignIN
+          {loading ? "Loading.....": "SignIN"}  
           </button>
           <p className="mt-6 text-center text-sm">
             Don't have an Account? {""}
             <Link
-              to="/signup"
+              to={`/register?redirect=${encodeURIComponent(redirect)}`}
               className="text-black underline hover:text-blue-500"
             >
               Register

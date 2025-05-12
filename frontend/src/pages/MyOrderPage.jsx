@@ -1,60 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchUserOrders } from "../redux/slice/orderSlice";
 
 const MyOrderPage = () => {
-  const [orders, setOrders] = useState([]);
- const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const handleRowClick =(orderId)=>{
-  navigate(`/order/${orderId}`)
-}
+  const { orders, loading, error } = useSelector((state) => state.order);
 
   useEffect(() => {
-    setTimeout(() => {
-      const mockOrder = [
-        {
-          _id: "1234",
-          createdAt: new Date(),
-          shippingAddress: { city: "New York", country: "India" },
-          orderItems: [
-            {
-              name: "Product 1",
-              image: "https://picsum.photos/500/500?random=1",
-            },
-          ],
-          totalPrice: 100,
-          isPaid: true,
-        },
-        {
-          _id: "4567",
-          createdAt: new Date(),
-          shippingAddress: { city: "New York", country: "India" },
-          orderItems: [
-            {
-              name: "Product 2",
-              image: "https://picsum.photos/500/500?random=2",
-            },
-          ],
-          totalPrice: 100,
-          isPaid: true,
-        },
-        {
-          _id: "7890",
-          createdAt: new Date(),
-          shippingAddress: { city: "New York", country: "India" },
-          orderItems: [
-            {
-              name: "Product 3",
-              image: "https://picsum.photos/500/500?random=3",
-            },
-          ],
-          totalPrice: 100,
-          isPaid: true,
-        },
-      ];
-      setOrders(mockOrder);
-    }, 1000);
-  }, []);
+    dispatch(fetchUserOrders());
+  }, [dispatch]);
+
+  const handleRowClick = (orderId) => {
+    navigate(`/order/${orderId}`);
+  };
+
+  if (loading) {
+    return <p>Loading...........</p>;
+  }
+
+  if (error) {
+    return <p>Error :{error}</p>;
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6">
@@ -76,7 +45,8 @@ const handleRowClick =(orderId)=>{
           <tbody>
             {orders.length > 0 ? (
               orders.map((order) => (
-                <tr onClick={()=>handleRowClick(order._id)}
+                <tr
+                  onClick={() => handleRowClick(order._id)}
                   key={order._id}
                   className="border-b hover:border-gray-50 cursor-pointer"
                 >
@@ -93,6 +63,8 @@ const handleRowClick =(orderId)=>{
                   <td className="py-2 px-2 sm:py-4 sm:px-4">
                     {new Date(order.createdAt).toLocaleDateString()}
                     {""}
+                    {new Date(order.createdAt).toLocaleDateString()}
+                    {""}
                   </td>
                   <td className="py-2 px-2 sm:py-4 sm:px-4">
                     {order.shippingAddress
@@ -100,16 +72,19 @@ const handleRowClick =(orderId)=>{
                       : "N/A"}
                   </td>
                   <td className="py-2 px-2 sm:py-4 sm:px-4">
-
                     {order.orderItems.length}
                   </td>
                   <td className="py-2 px-2 sm:py-4 sm:px-4">
-
-                    {order.totalPrice }
+                    {order.totalPrice}
                   </td>
                   <td className="py-2 px-2 sm:py-4 sm:px-4">
-
-                    <span className={`${order.isPaid ?"text-black bg-green-200 rounded" :"text-black bg-red-200"}`}>{`${order.isPaid ?"Paid" :"Pending"}`}</span>
+                    <span
+                      className={`${
+                        order.isPaid
+                          ? "text-black bg-green-200 rounded"
+                          : "text-black bg-red-200"
+                      }`}
+                    >{`${order.isPaid ? "Paid" : "Pending"}`}</span>
                   </td>
                 </tr>
               ))

@@ -1,53 +1,25 @@
 import React from "react";
-
-const checkout = {
-  _id: "1234",
-  createdAt: new Date(),
-  checkoutItems: [
-    {
-      productId: "1",
-      name: "Jacket",
-      color: "Red",
-      size: "M",
-      price: 124,
-      quantity: 1,
-      image: "https://picsum.photos/150?random=1",
-    },
-    {
-      productId: "2",
-      name: "Jacket",
-      color: "Red",
-      size: "M",
-      price: 124,
-      quantity: 1,
-      image: "https://picsum.photos/150?random=1",
-    },
-    {
-      productId: "3",
-      name: "Jacket",
-      color: "Red",
-      size: "M",
-      price: 124,
-      quantity: 1,
-      image: "https://picsum.photos/150?random=1",
-    },
-    {
-      productId: "4",
-      name: "Jacket",
-      color: "Red",
-      size: "M",
-      price: 124,
-      quantity: 1,
-      image: "https://picsum.photos/150?random=1",
-    },
-  ],
-  shippingAddress: {
-    address: "503 Narayan complex thane",
-    city: "Thane",
-  },
-};
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { clearCart } from "../redux/slice/cartSlice";
 
 const OrderConfirmation = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { checkout } = useSelector((state) => state.checkout);
+
+  // Clearr the cart when the order is confirm
+
+  useEffect(() => {
+    if (checkout && checkout._id) {
+      dispatch(clearCart());
+      localStorage.removeItem("cart");
+    } else {
+      navigate("/my-order");
+    }
+  }, [checkout, dispatch, navigate]);
+
   const calculateEstimatedDelivery = (createdAt) => {
     const orderDate = new Date(createdAt);
     orderDate.setDate(orderDate.getDate() + 10);
@@ -105,7 +77,7 @@ const OrderConfirmation = () => {
                 </div>
 
                 <div className="text-right">
-                  <h4 className="text-md font-medium">₹{item.price}</h4>
+                  <h4 className="text-md font-medium">${item.price}</h4>
                   <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                 </div>
               </div>
