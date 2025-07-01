@@ -90,6 +90,7 @@ const newFilters = {...filters ,minPrice:0 , maxPrice:newPrice};
 setFilters(filters);
 updateURLParams(newFilters)
 
+
 }
 
 
