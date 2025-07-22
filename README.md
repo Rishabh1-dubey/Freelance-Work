@@ -61,3 +61,7 @@ Welcome to my full-featured **E-Commerce Web Application** built using the power
 │ └── config/
 ├── .env
 └── README.md
+
+🙌 Author
+Made with ❤️ by Rishabh Dubey
+Feel free to connect or contribute!
