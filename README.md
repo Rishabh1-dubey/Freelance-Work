@@ -33,3 +33,31 @@ Welcome to my full-featured **E-Commerce Web Application** built using the power
 - MongoDB with Mongoose for database operations
 
 ---
+
+## 🔧 Tech Stack
+
+| Technology | Description |
+|------------|-------------|
+| **MongoDB** | NoSQL Database |
+| **Express.js** | Web framework for Node.js |
+| **React.js** | Frontend UI library |
+| **Node.js** | JavaScript runtime |
+| **Redux** | State management |
+| **Tailwind CSS** | Utility-first CSS framework |
+| **JWT** | Authentication & Authorization |
+| **Stripe / Razorpay** | Payment gateway (optional integration) |
+
+---
+
+## 📁 Folder Structure
+
+├── client/ # React frontend
+│ ├── src/
+│ └── public/
+├── server/ # Express backend
+│ ├── controllers/
+│ ├── models/
+│ ├── routes/
+│ └── config/
+├── .env
+└── README.md
