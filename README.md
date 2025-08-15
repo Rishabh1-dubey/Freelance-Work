@@ -2,6 +2,7 @@
 
 Welcome to my full-featured **E-Commerce Web Application** built using the powerful **MERN stack** — **MongoDB, Express.js, React.js, and Node.js**. This project delivers a seamless shopping experience, complete with user authentication, product browsing, cart management, admin dashboard, and secure payments.
 
+
 ---
 
 ## 🚀 Features
