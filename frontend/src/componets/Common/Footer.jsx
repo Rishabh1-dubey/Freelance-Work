@@ -14,7 +14,7 @@ const Footer = () => {
           <h3 className="text-lg text-gray-800 mb-4">NewsLetter</h3>
           <p className="text-gray-400 mb-4">
             Be the first to hear about new Products, Exclusive events, and
-            online offers
+            online offers.
           </p>
           <p className="font-medium text-sm text-gray-500 mb-6">
             Sign up and get 10% discount off your first order

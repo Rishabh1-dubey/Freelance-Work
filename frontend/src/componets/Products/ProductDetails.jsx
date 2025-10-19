@@ -63,9 +63,7 @@ const ProductDetails = ({ productId }) => {
         color: selectedColor,
         guestId,
         userId: user?._id,
-      })
-    )
-      .then(() => {
+      })).then(() => {
         toast.success("Product Added to cart", { duration: 1000 });
       })
       .finally(() => {
