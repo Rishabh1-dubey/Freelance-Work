@@ -12,6 +12,7 @@ Welcome to my full-featured **E-Commerce Web Application** built using the power
 - 👤 User profile with order history
 - 🛍️ Add to Cart / Remove from Cart
 - 💳 Checkout with payment integration
+- addding paypal for the handling the payment method
 
 🛠️ **Admin Dashboard**
 - 📦 Manage products (Create, Edit, Delete)
